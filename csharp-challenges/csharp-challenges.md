@@ -1,53 +1,45 @@
 # Csharp Challenges
 > This is a list of 6 challenges that have been created for you to test your Semgrep skills. The challenges are based on code inside the `csharp-code-for-challenges` folder, and are designed to help you learn how to write Semgrep rules.
 
-## Easy Challenges
+## Challenges
 
 ### Challenge 1
-**Description:** How many Python *files* import the `subprocess` module in the Django codebase.
+**Description:** Find all instances of `ActionResult` methods missing `[Authorize('Admin')]` attribute.
 
-**Hint:** Don't forget about `from subprocess import *`
+**Hint:** Use `pattern-not` with `[Authorize('Admin')]` attribute.
 
 ### Challenge 2
-**Description:**  Find all instances where a function is defined but not used anywhere in the Django codebase.
+**Description:**  Find all instances of Azure Functions with HTTP Trigger and have anonymous authentication.
 
-**Hint:** Look for function definitions and check if they are called.
+**Hint:** Pattern match the `AuthorizationLevel.Anonymous` usage in a function app.
 
 ### Challenge 3
-**Description:** Find all instances where a variable with "`password`" in the name is assigned a value. Example: `password_changed`
+**Description:** Find code pattern to match `ValidateState` method inside `OAuth2CodeRedeemerMiddleware` class. The code should also match the BinaryFormatter deserialization in `ValidateState` method.
 
-**Hint:** Use a Regex pattern to match the variable name.
-
-## Medium Challenges
+**Hint:** Use `pattern-inside` with `OAuth2CodeRedeemerMiddleware` and `ValidateState` method and pattern to match BinaryFormatter.
 
 ### Challenge 4
-**Description:** Find all instances of `pickle` usage in the Django codebase.
+**Description:** Find the insecure deserialization using `BinaryFormatter` in `ValidateState` method using *Taint* mode.
 
-**Hint:** Use the `pickle` pattern.
+**Hint:** Use the `pattern-source` and `pattern-sink` in *taint* mode to track `context.Request.Query["state"]`.
 
 ### Challenge 5
 
-**Description:** Find all instances of `eval` usage in the Django codebase.
+**Description:** Match the code pattern using *taint* mode to find token signing keys fetched from untrusted input coming from JWT token.
 
-**Hint:** Use the `eval` pattern.
-
-## Hard Challenges
+**Hint:** Use the `pattern-source` and `pattern-sink` in *taint* mode to track `var jwt = new JwtSecurityToken(token);`.
 
 ### Challenge 6
 
-**Description:** Find all instances of `exec` usage in the Django codebase.
+**Description:** Find all insecure token validation code patterns `RequireSignedTokens = false` & ` var jwt = new JwtSecurityToken(token);
+                    // TODO: Validate the token
+                    return jwt;`
 
-**Hint:** Use the `exec` pattern.
-
-### Challenge 7
-
-**Description:** Find all instances of `subprocess` usage in the Django codebase.
-
-**Hint:** Use the `subprocess` pattern.
+**Hint:** Use `pattern-either` to find multiple patterns
 
 
-# Csharp Challenges Solution
-> This is a list of solutions to the 7 challenges that I have created for you to test your Semgrep skills. The challenges are based on the Django python repo.
+# Csharp Challenges Solution - TBD
+> This is a list of solutions to the 6 challenges that I have created for you to test your Semgrep skills. The challenges are based on the Django python repo.
 
 ## Easy Challenges
 
