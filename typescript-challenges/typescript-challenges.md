@@ -4,159 +4,35 @@
 ## Easy Challenges
 
 ### Challenge 1
-**Description:** How many Python *files* import the `subprocess` module in the Django codebase.
-
-**Hint:** Don't forget about `from subprocess import *`
+Detect a particular SQL injection within the codebase.
 
 ### Challenge 2
-**Description:**  Find all instances where a function is defined but not used anywhere in the Django codebase.
+Identify a XSS vulnerable code in the codebase
 
-**Hint:** Look for function definitions and check if they are called.
 
 ### Challenge 3
-**Description:** Find all instances where a variable with "`password`" in the name is assigned a value. Example: `password_changed`
-
-**Hint:** Use a Regex pattern to match the variable name.
+Find hardcoded API keys or secrets in the source code.
 
 ## Medium Challenges
 
 ### Challenge 4
-**Description:** Find all instances of `pickle` usage in the Django codebase.
-
-**Hint:** Use the `pickle` pattern.
+Identify a parameter that was sanitized using an weake sanitization method
 
 ### Challenge 5
 
-**Description:** Find all instances of `eval` usage in the Django codebase.
-
-**Hint:** Use the `eval` pattern.
+Detect code that sets insecure file permissions
 
 ## Hard Challenges
 
 ### Challenge 6
 
-**Description:** Find all instances of `exec` usage in the Django codebase.
-
-**Hint:** Use the `exec` pattern.
+Identify a function which uses a non-secure method, which can lead to a RCE opportunity
 
 ### Challenge 7
 
-**Description:** Find all instances of `subprocess` usage in the Django codebase.
-
-**Hint:** Use the `subprocess` pattern.
+Locate a function which has a SQL Injection AND a Directory Transversal vulnerability on its code. 
 
 
-# Python Challenges Solution
-> This is a list of solutions to the 7 challenges that I have created for you to test your Semgrep skills. The challenges are based on the Django python repo.
+### Challenge 8
 
-## Easy Challenges
-
-### Challenge 1
-**Description:** How many Python files import the `subprocess` module in the Django codebase.
-
-```yaml
-patterns:
-    - pattern-either:
-        - pattern: |
-            import subprocess
-        - pattern: |
-            from subprocess import *
-```
-
-### Challenge 2
-**Description:**  Find all instances where a function is defined but not used anywhere in the Django codebase.
-
-```yaml
-patterns:
-    - pattern: |
-        def $FUNC(...):
-        ...
-    - pattern-not: |
-        $FUNC(...)
-```
-
-### Challenge 3
-**Description:** Find all instances where a variable with "password" in the name is assigned a value
-
-```yaml
-patterns:
-    - pattern: |
-        $VAR = ...
-    - metavariable-regex:
-        metavariable: "$VAR"
-        regex: ".*password.*"
-```
-
-## Medium Challenges
-
-### Challenge 4
-**Description:** Find all instances of `pickle` usage in the Django codebase.
-
-**Hint:** Use the `pickle` pattern.
-
-```yaml
-rules:
-  - id: pickle-usage
-    patterns:
-      - pattern: |
-          (pickle)
-    message: "Found pickle usage"
-    languages:
-      - python
-```
-
-### Challenge 5
-
-**Description:** Find all instances of `eval` usage in the Django codebase.
-
-**Hint:** Use the `eval` pattern.
-
-
-
-```yaml
-rules:
-  - id: eval-usage
-    patterns:
-      - pattern: |
-          (eval)
-    message: "Found eval usage"
-    languages:
-      - python
-```
-
-## Hard Challenges
-
-### Challenge 6
-
-**Description:** Find all instances of `exec` usage in the Django codebase.
-
-**Hint:** Use the `exec` pattern.
-
-```yaml
-rules:
-  - id: exec-usage
-    patterns:
-      - pattern: |
-          (exec)
-    message: "Found exec usage"
-    languages:
-      - python
-```
-
-### Challenge 7
-
-**Description:** Find all instances of `subprocess` usage in the Django codebase.
-
-**Hint:** Use the `subprocess` pattern.
-
-```yaml
-rules:
-  - id: subprocess-usage
-    patterns:
-      - pattern: |
-          (subprocess)
-    message: "Found subprocess usage"
-    languages:
-      - python
-```
-
+Detect a function which uses an weak crypto algorithm and allows a command injection attack
