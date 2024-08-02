@@ -6,7 +6,7 @@ using System.Web.Mvc;
 using VulnerableWebApp.Framework;
 using VulnerableWebApp.Models;
 
-namespace namespace CSharpChallenges
+namespace CSharpChallenges
 {
     public class NoAuthorizeController : Controller
     {
