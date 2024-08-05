@@ -14,20 +14,20 @@
 **Hint:** Pattern match the `AuthorizationLevel.Anonymous` usage in a function app.
 
 ### Challenge 3
-**Description:** Find code pattern to match `ValidateState` method inside `OAuth2CodeRedeemerMiddleware` class. The code should also match the BinaryFormatter deserialization in `ValidateState` method.
+**Description:** Find code pattern to match `ValidateState` method inside `OAuth2RequestManager` class. The code should also match the BinaryFormatter deserialization in `ValidateState` method.
 
-**Hint:** Use `pattern-inside` with `OAuth2CodeRedeemerMiddleware` and `ValidateState` method and pattern to match BinaryFormatter.
+**Hint:** Use `pattern-inside` with `OAuth2RequestManager` and `ValidateState` method and pattern to match BinaryFormatter.
 
 ### Challenge 4
-**Description:** Find the insecure deserialization using `BinaryFormatter` in `ValidateState` method using *Taint* mode.
+**Description:** Find the code pattern which tracks user input `context.Request.Query["state"]` and passes tainted value to `ValidateState` vulnerable method.
 
-**Hint:** Use the `pattern-source` and `pattern-sink` in *taint* mode to track `context.Request.Query["state"]`.
+**Hint:** Use the `pattern-source` and `pattern-sink` in *taint* mode to track taint from `context.Request.Query["state"]` to `ValidateState` method call.
 
 ### Challenge 5
 
-**Description:** Match the code pattern using *taint* mode to find token signing keys fetched from untrusted input coming from JWT token.
+**Description:** Match the code pattern to find token validation and signing keys fetched from untrusted input coming from JWT token.
 
-**Hint:** Use the `pattern-source` and `pattern-sink` in *taint* mode to track `var jwt = new JwtSecurityToken(token);`.
+**Hint:** Use the `pattern-either` to match `ValidateToken` and `GetSigningKeys` methods.
 
 ### Challenge 6
 

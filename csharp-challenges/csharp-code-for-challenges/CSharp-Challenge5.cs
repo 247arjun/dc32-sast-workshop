@@ -24,6 +24,8 @@ namespace CSharpChallenges
             var claimsPrincipal = handler.ValidateToken(token, validationParameters, out var validatedToken);
             return claimsPrincipal;
         }
+
+
         private static async Task<IEnumerable<SecurityKey>> GetSigningKeys(string issuer)
         {
             try
