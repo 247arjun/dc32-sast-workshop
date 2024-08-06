@@ -17,3 +17,23 @@ Participants will:
 
 ## Technical Level and Tools Used
 This workshop is tailored for beginner to intermediate skill levels, focusing on practical, actionable insights that participants can immediately apply to their projects. The primary tool used will be Semgrep, supplemented by the Semgrep Playground for online rule testing.
+
+## Additional Resources
+
+### Semgrep Academy
+[Semgrep 101](https://academy.semgrep.dev/courses/semgrep-101)
+
+[Secure Coding](https://academy.semgrep.dev/courses/secure-coding)
+
+[Semgrep Custom Rules Level 1](https://academy.semgrep.dev/courses/custom-rules)
+
+[Secure Guardrails](https://academy.semgrep.dev/courses/secure-guardrails)
+
+### Semgrep Documentation
+[Quick Start](https://semgrep.dev/docs/getting-started/quickstart)
+
+[Local scans with Semgrep](https://semgrep.dev/docs/getting-started/cli)
+
+[Writing Rules](https://semgrep.dev/docs/writing-rules/overview)
+
+[Custom Rule Examples](https://semgrep.dev/docs/writing-rules/rule-ideas)
