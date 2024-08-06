@@ -1,0 +1,9 @@
+rules:
+  - id: dc32-python-challenge-solution
+    patterns:
+        - pattern: |
+            # Pattern goes here
+    message: "Found a solution to the challenge."
+    severity: WARNING
+    languages:
+      - python
