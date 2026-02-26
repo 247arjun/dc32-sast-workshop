@@ -1,4 +1,4 @@
-# DEFCON 32 SAST Workshop
+# BSides Seattle 2026 SAST Workshop
 
 **Supercharge SAST: Semgrep Strategies for Secure Software** is a meticulously designed workshop aimed at introducing participants to the world of Static Application Security Testing (SAST) through the lens of Semgrep, a cutting-edge tool that combines the simplicity of syntax with the power of complex analysis. 
 
