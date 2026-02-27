@@ -1,0 +1,13 @@
+rules:
+- id: csharp-cert-validation-disabled
+  languages:
+    - csharp
+  message: Certificate validation callback disabled.
+  severity: WARNING
+  patterns:
+    - pattern: |
+        $HANDLER.ServerCertificateCustomValidationCallback =
+          (...) => true;
+    - metavariable-type:
+        metavariable: $HANDLER
+        type: HttpClientHandler
