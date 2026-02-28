@@ -1,28 +1,50 @@
 Please create a prompt asking copilot agent to create a workflow consist of the following 7 steps:
     1. Review the following code pattern and report vulnerability. 
     ```
-    
-        public bool CanExecute(ClaimsPrincipal principal, object resource, string action)
+       public bool CanExecute(
+            ClaimsPrincipal principal,
+            object resource,
+            string action)
+        {
+            var identity = principal?.Identity as ClaimsIdentity;
+
+            if (identity == null ||
+                resource == null ||
+                string.IsNullOrWhiteSpace(action))
             {
-                var identity = (ClaimsIdentity)principal.Identity;
-                if (resource is null || string.IsNullOrWhiteSpace(action))
-                {
-                    Logger.Error("Invalid authorization inputs");
-                    return false;
-                }
-                if (!resourceRoleMapping.TryGetValue(resource.ToString(), out var roles))
-                {
-                    Logger.Error("No mapping for resource");
-                    return false;
-                }
-                bool ok = roles.Any(required => identity.HasClaim(ClaimTypes.Role, required));
-                if (!ok)
-                {
-                    Logger.Warn("AuthZ denied");
-                    //Missing "return false" statement here for the failed authorization check which will cause it fall through to the default "return true", allowing access granted to the unauthorized users.
-                }
-                return true; // VULNERABLE: should be `return ok;`
+                Logger.Error("Invalid authorization inputs");
+                return false;
             }
+
+            var resourceKey = resource.ToString();
+            if (string.IsNullOrWhiteSpace(resourceKey))
+            {
+                Logger.Error("Invalid resource key");
+                return false;
+            }
+
+            // Example structure:
+            // Dictionary<string, Dictionary<string, string[]>> resourceActionRoleMapping;
+            if (!resourceActionRoleMapping.TryGetValue(resourceKey, out var actionRoleMap))
+            {
+                Logger.Error($"No mapping for resource: {resourceKey}");
+                return false;
+            }
+
+            if (!actionRoleMap.TryGetValue(action, out var requiredRoles) || requiredRoles == null || requiredRoles.Length == 0)
+            {
+                Logger.Error($"No mapping for resource/action: {resourceKey}/{action}");
+                return false; // deny-by-default if action isn't explicitly mapped
+            }
+
+            bool ok = requiredRoles.Any(r => identity.HasClaim(ClaimTypes.Role, r));
+            if (!ok)
+            {
+                Logger.Warn($"AuthZ denied: resource={resourceKey}, action={action}");
+            }
+
+            return true;
+        }
     ```
     2. Use the code pattern above as the seed template to generate more testcases (as many variations as you could to strike for high coverage) demonstrating the similar vulnerability pattern. Please generate at least 1 SAFE testcase as well as at least 1 vulnerable testcase for each variation.
     3. Generate semgrep rules so that it can match all vulnerable code patterns with zero false positive.
