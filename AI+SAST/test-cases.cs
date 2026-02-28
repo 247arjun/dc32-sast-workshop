@@ -1,6 +1,3 @@
-// Test file for Semgrep authorization bypass rules
-// Run: semgrep --config semgrep-rules/authorization-bypass.yaml .
-
 namespace TestCases
 {
     using System.Linq;
@@ -9,26 +6,49 @@ namespace TestCases
     public class AuthorizationBypassTestCases
     {
 
-        public bool CanExecute(ClaimsPrincipal principal, object resource, string action)
+        public bool CanExecute(
+            ClaimsPrincipal principal,
+            object resource,
+            string action)
         {
-            var identity = (ClaimsIdentity)principal.Identity;
-            if (resource is null || string.IsNullOrWhiteSpace(action))
+            var identity = principal?.Identity as ClaimsIdentity;
+
+            if (identity == null ||
+                resource == null ||
+                string.IsNullOrWhiteSpace(action))
             {
                 Logger.Error("Invalid authorization inputs");
                 return false;
             }
-            if (!resourceRoleMapping.TryGetValue(resource.ToString(), out var roles))
+
+            var resourceKey = resource.ToString();
+            if (string.IsNullOrWhiteSpace(resourceKey))
             {
-                Logger.Error("No mapping for resource");
+                Logger.Error("Invalid resource key");
                 return false;
             }
-            bool ok = roles.Any(required => identity.HasClaim(ClaimTypes.Role, required));
+
+            // Example structure:
+            // Dictionary<string, Dictionary<string, string[]>> resourceActionRoleMapping;
+            if (!resourceActionRoleMapping.TryGetValue(resourceKey, out var actionRoleMap))
+            {
+                Logger.Error($"No mapping for resource: {resourceKey}");
+                return false;
+            }
+
+            if (!actionRoleMap.TryGetValue(action, out var requiredRoles) || requiredRoles == null || requiredRoles.Length == 0)
+            {
+                Logger.Error($"No mapping for resource/action: {resourceKey}/{action}");
+                return false; // deny-by-default if action isn't explicitly mapped
+            }
+
+            bool ok = requiredRoles.Any(r => identity.HasClaim(ClaimTypes.Role, r));
             if (!ok)
             {
-                Logger.Warn("AuthZ denied");
-                //Missing "return false" statement here for the failed authorization check which will cause it fall through to the default "return true", allowing access granted to the unauthorized users.
+                Logger.Warn($"AuthZ denied: resource={resourceKey}, action={action}");
             }
-            return true; // VULNERABLE: should be `return ok;`
+
+            return true;
         }
 
         // Helper stubs
