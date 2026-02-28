@@ -3,11 +3,11 @@ using System.Net.Security;
 
 namespace AITriageSamples;
 
-public class SAFE_01_CheckSslPolicyErrors
+public class Feature01
 {
     public HttpClient BuildClient()
     {
-        var isDev = true;
+        var isDev = bool.TryParse(Environment.GetEnvironmentVariable("Dev"), out var parsedIsDev) && parsedIsDev;
         HttpClientHandler handler = new HttpClientHandler();
         if (isDev)
         {

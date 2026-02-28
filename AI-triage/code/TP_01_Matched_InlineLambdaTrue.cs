@@ -2,7 +2,7 @@ using System.Net.Http;
 
 namespace AITriageSamples;
 
-public class TP_01_InlineLambdaTrue
+public class Feature01
 {
     public HttpClient BuildClient()
     {
